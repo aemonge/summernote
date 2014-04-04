@@ -280,6 +280,34 @@ define([
      * @param {String} sLinkUrl
      * @param {Boolean} bNewWindow
      */
+    this.createCollapse = function ($editable) {
+      var rng = range.create();
+			var html =
+				'<div class="panel panel-default">' +
+					'<div class="panel-heading">' +
+						'<h4 class="panel-title">' +
+							'<a href="#collapseOne" data-parent="#accordion" data-toggle="collapse">' +
+								'[Panel Title]</a></h4>' +
+					'</div>' +
+					'<div class="panel-collapse collapse in" id="collapseOne">' +
+						'<div class="panel-body">' +
+							'[Panel Body]' +
+						'</div>' +
+					'</div>' +
+				'</div>'
+			;
+      recordUndo($editable);
+			rng.insertNode($(html)[0]);
+			rng.select();
+    };
+
+    /**
+     * create link
+     *
+     * @param {jQuery} $editable
+     * @param {String} sLinkUrl
+     * @param {Boolean} bNewWindow
+     */
     this.createLink = function ($editable, sLinkUrl, bNewWindow) {
       var rng = range.create();
       recordUndo($editable);

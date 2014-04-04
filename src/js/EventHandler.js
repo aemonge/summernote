@@ -186,6 +186,15 @@ define([
           });
         } else if (sEvent === 'showHelpDialog') {
           dialog.showHelpDialog($editable, $dialog);
+        } else if (sEvent === 'showBootstrapUI') {
+          $editable.focus();
+					editor.createCollapse($editable);
+          //var linkInfo = editor.getLinkInfo();
+
+          //editor.saveRange($editable);
+          //dialog.showLinkDialog($editable, $dialog, linkInfo).then(function (sLinkUrl, bNewWindow) {
+            //editor.restoreRange($editable);
+          //});
         } else if (sEvent === 'fullscreen') {
           var $scrollbar = $('html, body');
 

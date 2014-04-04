@@ -147,6 +147,9 @@ define([
       help: function (lang) {
         return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.help + '" data-event="showHelpDialog" tabindex="-1"><i class="fa fa-question icon-question"></i></button>';
       },
+      bootstrap: function (lang) {
+        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapUI" tabindex="-1"><i class="fa fa-question icon-question"></i></button>';
+      },
       fullscreen: function (lang) {
         return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.fullscreen + '" data-event="fullscreen" tabindex="-1"><i class="fa fa-arrows-alt icon-fullscreen"></i></button>';
       },
@@ -388,6 +391,21 @@ define([
                '</div>';
       };
 
+      var tplBootstrapDialog = function () {
+        return '<div class="note-bootstrap-dialog modal" aria-hidden="false">' +
+                 '<div class="modal-dialog">' +
+                   '<div class="modal-content">' +
+                     '<div class="modal-body">' +
+                       '<a class="modal-close pull-right" aria-hidden="true" tabindex="-1">' + lang.shortcut.close + '</a>' +
+                       '<div class="title">' + lang.shortcut.shortcuts + '</div>' +
+                       (agent.bMac ? tplShortcutTable(lang, options) : replaceMacKeys(tplShortcutTable(lang, options))) +
+                       '<p class="text-center"><a href="//hackerwins.github.io/summernote/" target="_blank">Summernote @VERSION</a> · <a href="//github.com/HackerWins/summernote" target="_blank">Project</a> · <a href="//github.com/HackerWins/summernote/issues" target="_blank">Issues</a></p>' +
+                     '</div>' +
+                   '</div>' +
+                 '</div>' +
+               '</div>';
+      };
+
       var tplHelpDialog = function () {
         return '<div class="note-help-dialog modal" aria-hidden="false">' +
                  '<div class="modal-dialog">' +
@@ -408,6 +426,7 @@ define([
                tplLinkDialog() +
                tplVideoDialog() +
                tplHelpDialog() +
+               tplBootstrapDialog() +
              '</div>';
     };
 
