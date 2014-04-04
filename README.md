@@ -1,3 +1,7 @@
+# AeMonge / Summernote
+This fork pretends to add bootstrap elements buttons. The main goal is
+to create collapse and tabs from a the editor GUI butons
+
 # Summernote
 Super Simple WYSIWYG Editor on Bootstrap(3.0 and 2.x).
 
