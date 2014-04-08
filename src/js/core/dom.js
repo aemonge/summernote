@@ -341,6 +341,10 @@ define(['core/func', 'core/list', 'core/agent'], function (func, list, agent) {
     var html = function ($node) {
       return dom.isTextarea($node[0]) ? $node.val() : $node.html();
     };
+
+		var generateUid = function () {
+			return ('0000' + (Math.random() * Math.pow(36, 4) << 0).toString(36)).substr(-4);
+		};
   
     return {
       blank: agent.bMSIE ? '&nbsp;' : '<br/>',
@@ -376,7 +380,8 @@ define(['core/func', 'core/list', 'core/agent'], function (func, list, agent) {
       fromOffsetPath: fromOffsetPath,
       split: split,
       remove: remove,
-      html: html
+      html: html,
+			generateUid: generateUid
     };
   })();
 

@@ -6,7 +6,7 @@
  * Copyright 2013 Alan Hong. and outher contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2014-04-04T11:03Z
+ * Date: 2014-04-05T21:32Z
  */
 (function (factory) {
   /* global define */
@@ -565,6 +565,10 @@
     var html = function ($node) {
       return dom.isTextarea($node[0]) ? $node.val() : $node.html();
     };
+
+		var generateUid = function () {
+			return ('0000' + (Math.random() * Math.pow(36, 4) << 0).toString(36)).substr(-4);
+		};
   
     return {
       blank: agent.bMSIE ? '&nbsp;' : '<br/>',
@@ -600,7 +604,8 @@
       fromOffsetPath: fromOffsetPath,
       split: split,
       remove: remove,
-      html: html
+      html: html,
+			generateUid: generateUid
     };
   })();
 
@@ -641,7 +646,9 @@
         ['table', ['table']],
         ['insert', ['link', 'picture', 'video']],
         ['view', ['fullscreen', 'codeview']],
-        ['help', ['help']]
+        ['help', ['help']],
+        ['bootstrap', ['bootstrap']],
+				['bootstrapTab', ['bootstrapTab']]
       ],
 
       // callbacks
@@ -1592,6 +1599,82 @@
      * @param {String} sLinkUrl
      * @param {Boolean} bNewWindow
      */
+    this.createCollapse = function ($editable) {
+			var uid = dom.generateUid();
+      var rng = range.create();
+			var html =
+				'<div class="panel panel-default">' +
+					'<div class="panel-heading">' +
+						'<h4 class="panel-title">' +
+							'<span href="#sm-collapse-' + uid + '"' +
+								'data-parent="#accordion" data-toggle="collapse"' +
+							'>' +
+								'[Panel Title]</span></h4>' +
+					'</div>' +
+					'<div class="panel-collapse collapse in"' +
+								' id="sm-collapse-' + uid + '"' +
+					'>' +
+						'<div class="panel-body">' +
+							'[Panel Body]' +
+						'</div>' +
+					'</div>' +
+				'</div>'
+			;
+      recordUndo($editable);
+			rng.insertNode($(html)[0]);
+			rng.select();
+    };
+
+    /**
+     * create link
+     *
+     * @param {jQuery} $editable
+     * @param {String} sLinkUrl
+     * @param {Boolean} bNewWindow
+     */
+    this.createTabs = function ($editable) {
+			var uid = dom.generateUid();
+      var rng = range.create();
+			var html ='<div>' +
+				'<ul class="nav nav-tabs" id="myTab">' +
+					'<li class="active"><span data-toggle="tab" href="#sm-tab-' + uid + '1">Home</span></li>' +
+					'<li><span data-toggle="tab" href="#sm-tab-' + uid + '2">Profile</span></li>' +
+					'<li class="dropdown">' +
+						'<span data-toggle="dropdown" class="dropdown-toggle" id="myTabDrop1" href="#">Dropdown <b class="caret"></b></span>' +
+						'<ul aria-labelledby="myTabDrop1" role="menu" class="dropdown-menu">' +
+							'<li><span data-toggle="tab" tabindex="-1" href="#sm-tab-' + uid + '3">@fat</span></li>' +
+							'<li><span data-toggle="tab" tabindex="-1" href="#sm-tab-' + uid + '4">@mdo</span></li>' +
+						'</ul>' +
+					'</li>' +
+				'</ul>' +
+				'<div class="tab-content" id="myTabContent">' +
+					'<div id="sm-tab-' + uid + '1"  class="tab-pane fade in active">' +
+						'<p>Raw denim you probably haven\'t heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>' +
+					'</div>' +
+					'<div id="sm-tab-' + uid + '2" class="tab-pane fade">' +
+						'<p>Food truck fixie locavore, accusamus mcsweeney\'s marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>' +
+					'</div>' +
+					'<div id="sm-tab-' + uid + '3" class="tab-pane fade">' +
+						'<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney\'s organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven\'t heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>' +
+					'</div>' +
+					'<div id="sm-tab-' + uid + '4" class="tab-pane fade">' +
+						'<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+			;
+      recordUndo($editable);
+			rng.insertNode($(html)[0]);
+			rng.select();
+    };
+
+    /**
+     * create link
+     *
+     * @param {jQuery} $editable
+     * @param {String} sLinkUrl
+     * @param {Boolean} bNewWindow
+     */
     this.createLink = function ($editable, sLinkUrl, bNewWindow) {
       var rng = range.create();
       recordUndo($editable);
@@ -2349,6 +2432,12 @@
           });
         } else if (sEvent === 'showHelpDialog') {
           dialog.showHelpDialog($editable, $dialog);
+        } else if (sEvent === 'showBootstrapUI') {
+          $editable.focus();
+					editor.createCollapse($editable);
+        } else if (sEvent === 'showBootstrapTabs') {
+          $editable.focus();
+					editor.createTabs($editable);
         } else if (sEvent === 'fullscreen') {
           var $scrollbar = $('html, body');
 
@@ -2687,16 +2776,16 @@
     /* jshint ignore:start */
     tplToolbarInfo = {
       picture: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.image.image + '" data-event="showImageDialog" tabindex="-1"><i class="fa fa-picture-o icon-picture"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.image.image + '" data-event="showImageDialog" tabindex="-1"><i class="fa fa-picture-o icon-picture"></i></a>';
       },
       link: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.link.link + '" data-event="showLinkDialog" tabindex="-1"><i class="fa fa-link icon-link"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.link.link + '" data-event="showLinkDialog" tabindex="-1"><i class="fa fa-link icon-link"></i></a>';
       },
       video: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.video.video + '" data-event="showVideoDialog" tabindex="-1"><i class="fa fa-youtube-play icon-play"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.video.video + '" data-event="showVideoDialog" tabindex="-1"><i class="fa fa-youtube-play icon-play"></i></a>';
       },
       table: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.table.table + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-table icon-table"></i> <span class="caret"></span></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.table.table + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-table icon-table"></i> <span class="caret"></span></a>' +
                  '<ul class="dropdown-menu">' +
                    '<div class="note-dimension-picker">' +
                      '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"></div>' +
@@ -2707,7 +2796,7 @@
                  '</ul>';
       },
       style: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.style.style + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-magic icon-magic"></i> <span class="caret"></span></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.style.style + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-magic icon-magic"></i> <span class="caret"></span></a>' +
                '<ul class="dropdown-menu">' +
                  '<li><a data-event="formatBlock" data-value="p">' + lang.style.normal + '</a></li>' +
                  '<li><a data-event="formatBlock" data-value="blockquote"><blockquote>' + lang.style.blockquote + '</blockquote></a></li>' +
@@ -2727,7 +2816,7 @@
           'Lucida Sans', 'Tahoma', 'Times', 'Times New Roman', 'Verdana'
         ];
 
-        var sMarkup = '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.name + '" tabindex="-1"><span class="note-current-fontname">Arial</span> <b class="caret"></b></button>';
+        var sMarkup = '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.name + '" tabindex="-1"><span class="note-current-fontname">Arial</span> <b class="caret"></b></a>';
         sMarkup += '<ul class="dropdown-menu">';
         for (var idx = 0; idx < aFont.length; idx++ ) {
           sMarkup += '<li><a data-event="fontName" data-value="' + aFont[idx] + '"><i class="fa fa-check icon-ok"></i> ' + aFont[idx] + '</a></li>';
@@ -2737,7 +2826,7 @@
         return sMarkup;
       },
       fontsize: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.size + '" tabindex="-1"><span class="note-current-fontsize">11</span> <b class="caret"></b></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.size + '" tabindex="-1"><span class="note-current-fontsize">11</span> <b class="caret"></b></a>' +
                '<ul class="dropdown-menu">' +
                  '<li><a data-event="fontSize" data-value="8"><i class="fa fa-check icon-ok"></i> 8</a></li>' +
                  '<li><a data-event="fontSize" data-value="9"><i class="fa fa-check icon-ok"></i> 9</a></li>' +
@@ -2751,7 +2840,7 @@
                '</ul>';
       },
       color: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small note-recent-color" title="' + lang.color.recent + '" data-event="color" data-value=\'{"backColor":"yellow"}\' tabindex="-1"><i class="fa fa-font icon-font" style="color:black;background-color:yellow;"></i></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small note-recent-color" title="' + lang.color.recent + '" data-event="color" data-value=\'{"backColor":"yellow"}\' tabindex="-1"><i class="fa fa-font icon-font" style="color:black;background-color:yellow;"></i></a>' +
                '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.color.more + '" data-toggle="dropdown" tabindex="-1">' +
                  '<span class="caret"></span>' +
                '</button>' +
@@ -2771,28 +2860,28 @@
                '</ul>';
       },
       bold: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.bold + '" data-shortcut="Ctrl+B" data-mac-shortcut="⌘+B" data-event="bold" tabindex="-1"><i class="fa fa-bold icon-bold"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.bold + '" data-shortcut="Ctrl+B" data-mac-shortcut="⌘+B" data-event="bold" tabindex="-1"><i class="fa fa-bold icon-bold"></i></a>';
       },
       italic: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.italic + '" data-shortcut="Ctrl+I" data-mac-shortcut="⌘+I" data-event="italic" tabindex="-1"><i class="fa fa-italic icon-italic"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.italic + '" data-shortcut="Ctrl+I" data-mac-shortcut="⌘+I" data-event="italic" tabindex="-1"><i class="fa fa-italic icon-italic"></i></a>';
       },
       underline: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.underline + '" data-shortcut="Ctrl+U" data-mac-shortcut="⌘+U" data-event="underline" tabindex="-1"><i class="fa fa-underline icon-underline"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.underline + '" data-shortcut="Ctrl+U" data-mac-shortcut="⌘+U" data-event="underline" tabindex="-1"><i class="fa fa-underline icon-underline"></i></a>';
       },
       strike: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.strike + '" data-event="strikethrough" tabindex="-1"><i class="fa fa-strikethrough icon-strikethrough"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.strike + '" data-event="strikethrough" tabindex="-1"><i class="fa fa-strikethrough icon-strikethrough"></i></a>';
       },
       clear: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.clear + '" data-shortcut="Ctrl+\\" data-mac-shortcut="⌘+\\" data-event="removeFormat" tabindex="-1"><i class="fa fa-eraser icon-eraser"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.font.clear + '" data-shortcut="Ctrl+\\" data-mac-shortcut="⌘+\\" data-event="removeFormat" tabindex="-1"><i class="fa fa-eraser icon-eraser"></i></a>';
       },
       ul: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.lists.unordered + '" data-shortcut="Ctrl+Shift+8" data-mac-shortcut="⌘+⇧+7" data-event="insertUnorderedList" tabindex="-1"><i class="fa fa-list-ul icon-list-ul"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.lists.unordered + '" data-shortcut="Ctrl+Shift+8" data-mac-shortcut="⌘+⇧+7" data-event="insertUnorderedList" tabindex="-1"><i class="fa fa-list-ul icon-list-ul"></i></a>';
       },
       ol: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.lists.ordered + '" data-shortcut="Ctrl+Shift+7" data-mac-shortcut="⌘+⇧+8" data-event="insertOrderedList" tabindex="-1"><i class="fa fa-list-ol icon-list-ol"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.lists.ordered + '" data-shortcut="Ctrl+Shift+7" data-mac-shortcut="⌘+⇧+8" data-event="insertOrderedList" tabindex="-1"><i class="fa fa-list-ol icon-list-ol"></i></a>';
       },
       paragraph: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.paragraph.paragraph + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-align-left icon-align-left"></i>  <span class="caret"></span></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" title="' + lang.paragraph.paragraph + '" data-toggle="dropdown" tabindex="-1"><i class="fa fa-align-left icon-align-left"></i>  <span class="caret"></span></a>' +
         '<div class="dropdown-menu">' +
           '<div class="note-align btn-group">' +
             '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.paragraph.left + '" data-shortcut="Ctrl+Shift+L" data-mac-shortcut="⌘+⇧+L" data-event="justifyLeft" tabindex="-1"><i class="fa fa-align-left icon-align-left"></i></button>' +
@@ -2807,7 +2896,7 @@
         '</div>';
       },
       height: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.height + '" tabindex="-1"><i class="fa fa-text-height icon-text-height"></i>&nbsp; <b class="caret"></b></button>' +
+        return '<a type="button" class="btn btn-default btn-sm btn-small dropdown-toggle" data-toggle="dropdown" title="' + lang.font.height + '" tabindex="-1"><i class="fa fa-text-height icon-text-height"></i>&nbsp; <b class="caret"></b></a>' +
         '<ul class="dropdown-menu">' +
           '<li><a data-event="lineHeight" data-value="1.0"><i class="fa fa-check icon-ok"></i> 1.0</a></li>' +
           '<li><a data-event="lineHeight" data-value="1.2"><i class="fa fa-check icon-ok"></i> 1.2</a></li>' +
@@ -2820,19 +2909,25 @@
         '</ul>';
       },
       help: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.help + '" data-event="showHelpDialog" tabindex="-1"><i class="fa fa-question icon-question"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.help + '" data-event="showHelpDialog" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
+      },
+      bootstrap: function (lang) {
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapUI" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
+      },
+      bootstrapTab: function (lang) {
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapTabs" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
       },
       fullscreen: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.fullscreen + '" data-event="fullscreen" tabindex="-1"><i class="fa fa-arrows-alt icon-fullscreen"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.fullscreen + '" data-event="fullscreen" tabindex="-1"><i class="fa fa-arrows-alt icon-fullscreen"></i></a>';
       },
       codeview: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.codeview + '" data-event="codeview" tabindex="-1"><i class="fa fa-code icon-code"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.codeview + '" data-event="codeview" tabindex="-1"><i class="fa fa-code icon-code"></i></a>';
       },
       undo: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.history.undo + '" data-event="undo" tabindex="-1"><i class="fa fa-undo icon-undo"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.history.undo + '" data-event="undo" tabindex="-1"><i class="fa fa-undo icon-undo"></i></a>';
       },
       redo: function (lang) {
-        return '<button type="button" class="btn btn-default btn-sm btn-small" title="' + lang.history.redo + '" data-event="redo" tabindex="-1"><i class="fa fa-repeat icon-repeat"></i></button>';
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.history.redo + '" data-event="redo" tabindex="-1"><i class="fa fa-repeat icon-repeat"></i></a>';
       }
     };
     tplPopover = function (lang) {
