@@ -186,12 +186,15 @@ define([
           });
         } else if (sEvent === 'showHelpDialog') {
           dialog.showHelpDialog($editable, $dialog);
-        } else if (sEvent === 'showBootstrapUI') {
+        } else if (sEvent === 'showBootstrapUiCollapse') {
           $editable.focus();
 					editor.createCollapse($editable);
-        } else if (sEvent === 'showBootstrapTabs') {
-          $editable.focus();
-					editor.createTabs($editable);
+				} else if (sEvent === 'showBootstrapTab3') {
+					$editable.focus();
+					editor.createTab($editable, 3);
+				} else if (sEvent === 'showBootstrapTab5') {
+					$editable.focus();
+					editor.createTab($editable, 5);
         } else if (sEvent === 'fullscreen') {
           var $scrollbar = $('html, body');
 

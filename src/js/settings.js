@@ -37,7 +37,7 @@ define('settings', function () {
         ['insert', ['link', 'picture', 'video']],
         ['view', ['fullscreen', 'codeview']],
         ['help', ['help']],
-        ['bootstrap', ['bootstrap']]
+				['bootstrapUI', ['bootstrapCollapse', 'bootstrapTab3', 'bootstrapTab5']]
       ],
 
       // callbacks

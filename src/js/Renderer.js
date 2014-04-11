@@ -147,12 +147,15 @@ define([
       help: function (lang) {
         return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.help + '" data-event="showHelpDialog" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
       },
-      bootstrap: function (lang) {
-        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapUI" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
+      bootstrapCollapse: function (lang) {
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a collapse' + '" data-event="showBootstrapUiCollapse" tabindex="-1"><i class="fa godai-icon-collapse"></i></a>';
       },
-      bootstrapTab: function (lang) {
-        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapTabs" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
-      },
+			bootstrapTab3: function (lang) {
+				return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a 3 element left menu' + '" data-event="showBootstrapTab3" tabindex="-1"><i class="fa godai-icon-tab-3"></i></a>';
+			},
+			bootstrapTab5: function (lang) {
+				return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a 3 element left menu' + '" data-event="showBootstrapTab5" tabindex="-1"><i class="fa godai-icon-tab-9"></i></a>';
+			},
       fullscreen: function (lang) {
         return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.fullscreen + '" data-event="fullscreen" tabindex="-1"><i class="fa fa-arrows-alt icon-fullscreen"></i></a>';
       },

@@ -6,7 +6,7 @@
  * Copyright 2013 Alan Hong. and outher contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2014-04-05T21:32Z
+ * Date: 2014-04-11T00:57Z
  */
 (function (factory) {
   /* global define */
@@ -647,8 +647,7 @@
         ['insert', ['link', 'picture', 'video']],
         ['view', ['fullscreen', 'codeview']],
         ['help', ['help']],
-        ['bootstrap', ['bootstrap']],
-				['bootstrapTab', ['bootstrapTab']]
+				['bootstrapUI', ['bootstrapCollapse', 'bootstrapTab3', 'bootstrapTab5']]
       ],
 
       // callbacks
@@ -1593,76 +1592,64 @@
     };
 
     /**
-     * create link
-     *
-     * @param {jQuery} $editable
-     * @param {String} sLinkUrl
-     * @param {Boolean} bNewWindow
      */
-    this.createCollapse = function ($editable) {
-			var uid = dom.generateUid();
+    this.createTab = function ($editable, tabCount) {
+			var i, cssClass;
+			var pUid = dom.generateUid();
+			var wUid = dom.generateUid();
+			var uids = [];
       var rng = range.create();
-			var html =
-				'<div class="panel panel-default">' +
-					'<div class="panel-heading">' +
-						'<h4 class="panel-title">' +
-							'<span href="#sm-collapse-' + uid + '"' +
-								'data-parent="#accordion" data-toggle="collapse"' +
-							'>' +
-								'[Panel Title]</span></h4>' +
-					'</div>' +
-					'<div class="panel-collapse collapse in"' +
-								' id="sm-collapse-' + uid + '"' +
-					'>' +
-						'<div class="panel-body">' +
-							'[Panel Body]' +
-						'</div>' +
-					'</div>' +
-				'</div>'
+
+			for (i = 0; i < tabCount; i++) {
+				uids.push(dom.generateUid());
+			}
+
+			var html = '<div id="sm-tab-' + pUid + '" class="container-fluid summer-tabs">' +
+				'<div class="col-md-3"><div class="row" id="leftMenu"> <ul class="nav nav-pills"><ul class="nav menu">'
 			;
+			for (i = 0; i < tabCount; i++) {
+				cssClass = (i === 0 ? 'active' : '');
+				html += '<li class="' + cssClass + '"><span data-toggle="tab" href="#sm-tab-' + uids[i] + '">[Menu title]</span></li>';
+			}
+			html += '</ul></ul></div></div>';
+
+			html += '<div class="col-md-9"><div class="row" id="contentHalf"><div class="item-page"><div class="row template-studies-conten">' +
+				'<section class="col-md-12" id="estudios-grado"><div class="container"><div class="tab-content" id="sm-tab-' + wUid + '">'
+			;
+			for (i = 0; i < tabCount; i++) {
+				cssClass = (i === 0 ? 'active in' : '');
+				html += '<div id="sm-tab-' + uids[i] + '" class="tab-pane fade ' + cssClass + '">' + '<p>[Tab Text]</p></div>';
+			}
+			html += ' </div> </div> </section> </div> </div> </div> </div> </div> ';
+
       recordUndo($editable);
 			rng.insertNode($(html)[0]);
 			rng.select();
     };
 
     /**
-     * create link
-     *
-     * @param {jQuery} $editable
-     * @param {String} sLinkUrl
-     * @param {Boolean} bNewWindow
      */
-    this.createTabs = function ($editable) {
+    this.createCollapse = function ($editable) {
+			var pUid = dom.generateUid();
 			var uid = dom.generateUid();
       var rng = range.create();
-			var html ='<div>' +
-				'<ul class="nav nav-tabs" id="myTab">' +
-					'<li class="active"><span data-toggle="tab" href="#sm-tab-' + uid + '1">Home</span></li>' +
-					'<li><span data-toggle="tab" href="#sm-tab-' + uid + '2">Profile</span></li>' +
-					'<li class="dropdown">' +
-						'<span data-toggle="dropdown" class="dropdown-toggle" id="myTabDrop1" href="#">Dropdown <b class="caret"></b></span>' +
-						'<ul aria-labelledby="myTabDrop1" role="menu" class="dropdown-menu">' +
-							'<li><span data-toggle="tab" tabindex="-1" href="#sm-tab-' + uid + '3">@fat</span></li>' +
-							'<li><span data-toggle="tab" tabindex="-1" href="#sm-tab-' + uid + '4">@mdo</span></li>' +
-						'</ul>' +
-					'</li>' +
-				'</ul>' +
-				'<div class="tab-content" id="myTabContent">' +
-					'<div id="sm-tab-' + uid + '1"  class="tab-pane fade in active">' +
-						'<p>Raw denim you probably haven\'t heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>' +
+			var html =
+				'<div id="sm-collapse-' + pUid + '" class="summer-collapse panel panel-default">' +
+					'<div class="panel-heading">' +
+						'<h4 class="panel-title">' +
+							'<span class="" href="#sm-collapse-' + uid + '" data-parent="#sm-collapse-' + pUid + '" data-toggle="collapse">' +
+								'[Collapsable Title]' +
+							'</spana>' +
+						'</h4>' +
 					'</div>' +
-					'<div id="sm-tab-' + uid + '2" class="tab-pane fade">' +
-						'<p>Food truck fixie locavore, accusamus mcsweeney\'s marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>' +
+					'<div class="panel-collapse collapse in" id="sm-collapse-' + uid + '" style="">' +
+						'<div class="panel-body">' +
+								'[Collapsable Body]' +
+						'</div>' +
 					'</div>' +
-					'<div id="sm-tab-' + uid + '3" class="tab-pane fade">' +
-						'<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney\'s organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven\'t heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>' +
-					'</div>' +
-					'<div id="sm-tab-' + uid + '4" class="tab-pane fade">' +
-						'<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>' +
-					'</div>' +
-				'</div>' +
-			'</div>'
+				'</div>'
 			;
+
       recordUndo($editable);
 			rng.insertNode($(html)[0]);
 			rng.select();
@@ -2432,12 +2419,15 @@
           });
         } else if (sEvent === 'showHelpDialog') {
           dialog.showHelpDialog($editable, $dialog);
-        } else if (sEvent === 'showBootstrapUI') {
+        } else if (sEvent === 'showBootstrapUiCollapse') {
           $editable.focus();
 					editor.createCollapse($editable);
-        } else if (sEvent === 'showBootstrapTabs') {
-          $editable.focus();
-					editor.createTabs($editable);
+				} else if (sEvent === 'showBootstrapTab3') {
+					$editable.focus();
+					editor.createTab($editable, 3);
+				} else if (sEvent === 'showBootstrapTab5') {
+					$editable.focus();
+					editor.createTab($editable, 5);
         } else if (sEvent === 'fullscreen') {
           var $scrollbar = $('html, body');
 
@@ -2911,12 +2901,15 @@
       help: function (lang) {
         return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.help + '" data-event="showHelpDialog" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
       },
-      bootstrap: function (lang) {
-        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapUI" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
+      bootstrapCollapse: function (lang) {
+        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a collapse' + '" data-event="showBootstrapUiCollapse" tabindex="-1"><i class="fa godai-icon-collapse"></i></a>';
       },
-      bootstrapTab: function (lang) {
-        return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'bootstrapUI' + '" data-event="showBootstrapTabs" tabindex="-1"><i class="fa fa-question icon-question"></i></a>';
-      },
+			bootstrapTab3: function (lang) {
+				return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a 3 element left menu' + '" data-event="showBootstrapTab3" tabindex="-1"><i class="fa godai-icon-tab-3"></i></a>';
+			},
+			bootstrapTab5: function (lang) {
+				return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + 'Create a 3 element left menu' + '" data-event="showBootstrapTab5" tabindex="-1"><i class="fa godai-icon-tab-9"></i></a>';
+			},
       fullscreen: function (lang) {
         return '<a type="button" class="btn btn-default btn-sm btn-small" title="' + lang.options.fullscreen + '" data-event="fullscreen" tabindex="-1"><i class="fa fa-arrows-alt icon-fullscreen"></i></a>';
       },
