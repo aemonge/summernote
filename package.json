@@ -23,6 +23,7 @@
     "connect-livereload": "*"
   },
   "dependencies": {
-    "open": "0.0.4"
+    "open": "0.0.4",
+    "grunt-zip": "~0.13.0"
   }
 }

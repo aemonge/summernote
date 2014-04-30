@@ -96,15 +96,39 @@ module.exports = function (grunt) {
         options: {
           livereload: true
         }
+      },
+			joomla: {
+        files: ['src/less/*.less', 'src/js/**/*.js'],
+        tasks: ['recess', 'jshint', 'qunit'],
+        options: {
+          livereload: false
+        }
       }
-    }
+    },
+
+		zip: {
+			widgets: {
+				router: function (filepath) {
+					// Route each file to /{{filename}}
+					var filename = path.basename(filepath);
+					return filename;
+				},
+				src: ['src/joomla/*', 'dist/summernote.js' ],
+				dest: 'dist/joomla-summernote.zip'
+			}
+		}
   });
 
   // load grunt tasks on package.json.
   require('load-grunt-tasks')(grunt);
+  var path = require('path');
+	grunt.loadNpmTasks('grunt-zip'); //TODO: move it into require
 
   // server
   grunt.registerTask('server', ['connect', 'watch']);
+
+	// watchjoomla
+  grunt.registerTask('watchjoomla', ['watch:joomla']);
 
   // build: build summernote.js
   grunt.loadTasks('build');
@@ -113,7 +137,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', ['jshint', 'qunit']);
 
   // dist
-  grunt.registerTask('dist', ['build', 'test', 'uglify', 'recess']);
+  grunt.registerTask('dist', ['build', 'test', 'uglify', 'recess', 'zip']);
 
   // default: build, test, dist.
   grunt.registerTask('default', ['dist']);
